@@ -1,0 +1,28 @@
+{
+  "name": "shopback-seo-quiz",
+  "version": "1.0.0",
+  "description": "A Node.js package to let user scan a HTML content and show all of the SEO defects",
+  "main": "index.js",
+  "scripts": {
+    "test": "node .\\test\\test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jahuangchao/shopback-seo-quiz.git"
+  },
+  "keywords": [
+    "shopback"
+  ],
+  "author": "jahuang <jahuang@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jahuangchao/shopback-seo-quiz/issues"
+  },
+  "homepage": "https://github.com/jahuangchao/shopback-seo-quiz#readme",
+  "engines": {
+    "node": ">= 8.0"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2"
+  }
+}
