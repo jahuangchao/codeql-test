@@ -26,7 +26,7 @@ sb.load_html(sb.io_types.FILE, `${__dirname}/test.html`).then(() => {
     sb.report(sb.io_types.CONSOLE);
 }).catch((err) => {
     console.error(err);
-})
+});
 ```
 
 ## Requirements
@@ -46,7 +46,7 @@ Node.js 8.0 or greater
 
 ## API
 
-### Custom pre-defined rule arguments
+### Customize pre-defined rule arguments
 Use third argument of load_html method to customize pre-defined rule arguments.<br/>
 Two options can be set by user: `tag_strong_max` and `tag_h1_max`.
 
@@ -58,7 +58,7 @@ sb.load_html(sb.io_types.FILE, `${__dirname}/test.html`, options).then(() => {
   ...
 }).catch((err) => {
   ...
-})
+});
 ```
 
 ### Rules
@@ -98,7 +98,7 @@ sb.load_html(sb.io_types.FILE, `${__dirname}/test.html`).then(() => {
     var new_rule_1 = new sb.rules.rule_tag_exceed_max(["img"], 1);
     sb.add_seo_rule(new_rule_1);
 
-    // skip pre-defined SEO rule 5
+    // skip fifth pre-defined SEO rule
     sb.skip_seo_rule(5, true);
 
     // skip first custom SEO rule
@@ -108,7 +108,7 @@ sb.load_html(sb.io_types.FILE, `${__dirname}/test.html`).then(() => {
     sb.report(sb.io_types.CONSOLE);
 }).catch((err) => {
     ...
-})
+});
 ```
 
 ### Input
@@ -117,11 +117,21 @@ Use `load_html` method to load input HTML.
 
 ```js
 const sb = require('shopback-seo-quiz');
+const fs = require('fs');
+
+// file input
 sb.load_html(sb.io_types.FILE, `${__dirname}/test.html`).then(() => {
   ...
 }).catch((err) => {
   ...
-})
+});
+
+// readable stream input
+sb.load_html(sb.io_types.STREAM`, fs.createReadStream(`${__dirname}/test.html`)).then(() => {
+  ...
+}).catch((err) => {
+  ...
+});
 ```
 
 ### Output
@@ -130,12 +140,31 @@ Use `report` method to get SEO verification report.
 
 ```js
 const sb = require('shopback-seo-quiz');
+const fs = require('fs');
+
+// console output
+sb.load_html(sb.io_types.FILE, `${__dirname}/test.html`).then(() => {
+  ...
+  sb.report(sb.io_types.CONSOLE);
+}).catch((err) => {
+  ...
+});
+
+// file output
 sb.load_html(sb.io_types.FILE, `${__dirname}/test.html`).then(() => {
   ...
   sb.report(sb.io_types.FILE, `${__dirname}/test.log`);
 }).catch((err) => {
   ...
-})
+});
+
+// writable stream output
+sb.load_html(sb.io_types.FILE, `${__dirname}/test.html`).then(() => {
+  ...
+  sb.report(sb.io_types.STREAM, fs.createWriteStream(`${__dirname}/test.log`));
+}).catch((err) => {
+  ...
+});
 ```
 
 ## Test package

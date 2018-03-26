@@ -34,10 +34,9 @@ function load_html_by_file(fp) {
 /**
  * load html file from readable stream
  */
-function load_html_by_stream(fp) {
+function load_html_by_stream(rs) {
     return new Promise((resolve, reject) => {
         var html = "";
-        var rs = fs.createReadStream(fp);
         rs.on('data', (chunk) => {
             html += chunk;
         });
@@ -55,12 +54,12 @@ function load_html_by_stream(fp) {
 /**
  * load html file
  */
-async function load_html(load_type, fp, options) {
+async function load_html(load_type, src, options) {
     var html = null;
     if(load_type == IO_TYPE_FILE) {
-        html = await load_html_by_file(fp);
+        html = await load_html_by_file(src);
     } else if(load_type == IO_TYPE_STREAM){
-        html = await load_html_by_stream(fp);
+        html = await load_html_by_stream(src);
     } else {
         throw new Error(`Unsupport input type: ${load_type}`);
     }
@@ -100,7 +99,7 @@ async function load_html(load_type, fp, options) {
         add_seo_rule(new rules.rule_tag_exceed_max(["strong"], max_strong));
         add_seo_rule(new rules.rule_tag_exceed_max(["h1"], max_h1));
     } else {
-        throw new Error(`Fail to load html from ${fp} (load type: ${load_type})`);
+        throw new Error(`Fail to load html, load type: ${load_type})`);
     }
 }
 
@@ -162,7 +161,7 @@ function skip_seo_rule(skip_rule, is_skip) {
 /**
  * call verify function to get report and output to file, writable stream or console
  */
-function report(report_type, fp) {
+function report(report_type, dest) {
     console.log("==========    SEO  RULES    ==========");
     verify(seo_rules);  // run verify to get the latest report
 
@@ -172,19 +171,18 @@ function report(report_type, fp) {
 
     try {
         if(report_type == IO_TYPE_FILE) {
-            fs.writeFileSync(fp, output, "utf8");
-            console.log(`\nOutput report to file "${fp}".`);
-        } else if(report_type == IO_TYPE_STREAM){
-            var ws = fs.createWriteStream(fp);
-            ws.write(output);
-            ws.end();
+            fs.writeFileSync(dest, output, "utf8");
+            console.log(`\nOutput report to file "${dest}".`);
+        } else if(report_type == IO_TYPE_STREAM) {
+            dest.write(output);
+            dest.end();
 
-            ws.on('error', (err) => {
+            dest.on('error', (err) => {
                 throw new Error(err);
             })
 
-            ws.on('finish', () => {
-                console.log(`\nOutput report to writable stream "${fp}".`);
+            dest.on('finish', () => {
+                console.log(`\nOutput report to writable stream.`);
             });
         } else if(report_type == IO_TYPE_CONSOLE) {
             console.log(`\n${output}`);
