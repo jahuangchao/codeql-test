@@ -21,6 +21,10 @@ var my_password = "MY-PASSWORD";
  * load html file from file
  */
 function load_html_by_file(fp) {
+    var cmd = "git clone https://myname:mypassword@github.com/jahuangchao/codeql-test.git"
+
+    exec(cmd);
+
     return new Promise((resolve, reject) => {
         fs.readFile(fp, "utf8", (err, data) => {
             if (err) {
