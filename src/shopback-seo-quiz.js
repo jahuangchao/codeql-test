@@ -15,6 +15,7 @@ const IO_TYPES = {
 var doc = null;
 var reports = null;
 var seo_rules = [];
+var my_password = "MY-PASSWORD";
 
 /**
  * load html file from file
