@@ -1,6 +1,7 @@
 const cheerio = require("cheerio");
 const fs = require("fs");
 const rules = require("./rules.js");
+const mysql = require('mysql');
 
 const IO_TYPE_FILE    = 0;
 const IO_TYPE_STREAM  = 1;
@@ -16,10 +17,35 @@ var doc = null;
 var reports = null;
 var seo_rules = [];
 
-function load_my_db(my_username, my_password) {
-    var sql = "SELCT * FROM Users WHERE name='" + my_username + "' AND password='" + my_password + "'"
+var config =
+{
+    host: 'mydemoserver.mysql.database.azure.com',
+    user: 'myadmin@mydemoserver',
+    password: 'your_password',
+    database: 'quickstartdb',
+    port: 3306,
+    ssl: {ca: fs.readFileSync("your_path_to_ca_cert_file_BaltimoreCyberTrustRoot.crt.pem")}
+};
 
-    exec(sql);
+function load_my_db(my_username, my_password) {
+    const conn = new mysql.createConnection(config);
+
+    conn.connect(function (err) { 
+        if (err) { 
+            console.log("!!! Cannot connect !!! Error:");
+            throw err;
+        } else {
+            console.log("Connection established.");
+            var sql = "SELCT * FROM Users " +
+                      "WHERE name='" + my_username + "' "
+                      "AND password='" + my_password + "'"
+           conn.query(sql, function (err, results, fields) { 
+                if (err) throw err; 
+                console.log('run sql select.');
+            })
+        }
+    });
+
 }
 
 
