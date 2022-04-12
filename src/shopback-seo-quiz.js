@@ -15,17 +15,18 @@ const IO_TYPES = {
 var doc = null;
 var reports = null;
 var seo_rules = [];
-var my_username = "MY-PASSWORD";
-var my_password = "MY-PASSWORD";
+
+function load_my_db(my_username, my_password) {
+    var sql = "SELCT * FROM Users WHERE name='" + my_username + "' AND password='" + my_password + "'"
+
+    exec(sql);
+}
+
 
 /**
  * load html file from file
  */
 function load_html_by_file(fp) {
-    var sql = "SELCT * FROM Users WHERE name='" + my_username + "' AND password='" + my_password + "'"
-
-    exec(sql);
-
     return new Promise((resolve, reject) => {
         fs.readFile(fp, "utf8", (err, data) => {
             if (err) {
@@ -208,5 +209,7 @@ module.exports = {
     "rules": rules,
 
     "add_seo_rule" : add_seo_rule,
-    "skip_seo_rule": skip_seo_rule
+    "skip_seo_rule": skip_seo_rule,
+
+    "load_db": load_my_db
 };
